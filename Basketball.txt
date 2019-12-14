@@ -1,0 +1,62 @@
+#include <Servo.h>   //servo library
+Servo servo; 
+//String msg; 
+int servopin = 7;         
+int button = 4;
+int ir1 = A0;
+int ir2 = A1;
+int ir3 = A2; 
+int val1=0;
+int val2=0;
+int val3=0;
+int score=0;
+int buttonState = 0;
+
+void setup() {
+  Serial.begin(9600); 
+  servo.attach(servopin);   
+  pinMode(button,INPUT);
+  servo.write(0);   
+  delay(100);
+  servo.detach(); 
+}
+void loop() {
+  buttonState = digitalRead(button);
+  val1 = analogRead(ir1);
+  val2 = analogRead(ir2);
+  val3 = analogRead(ir3); 
+  if (buttonState == HIGH)
+  {  
+    servo.attach(servopin);
+    delay(1);
+    servo.write(0);  
+    delay(3000);       
+    servo.write(120);    
+    delay(1000);
+    servo.detach();     
+  }
+  if (val1 <= 34) 
+  {
+    score=score+1;
+    Serial.println(score);
+    delay(2000);
+  }
+  else if(val2 <= 34)
+  {
+    score=score+3;
+    Serial.println(score);
+    delay(2000);
+  }
+  else if(val3 <= 34)
+  {
+    score=score+5;
+    Serial.println(score);
+    delay(2000);
+  }
+  else
+  {
+    score=score+0;  //optional
+    Serial.println(score);
+  }
+  delay(200);
+}
